@@ -17,23 +17,20 @@ import org.joda.time.LocalDate;
 public class ProgramacaoDto {
 
     private Integer id;
-    private String codigo;
+    private String nome;
     private String descricao;
     private String identificador;
     private String dtAbertura;
-    private EmpresaDto empresa;
-    private PedDto ped;
     private AtivoInativo situacao;
 
     public static ProgramacaoDto from(Programacao programacao) {
         if (programacao == null) return null;
         return builder()
+                .id(programacao.getIdProgramacao())
                 .dtAbertura(DateUtils.toString(programacao.getDtAbertura()))
-                .codigo(programacao.getCdProgramacao())
+                .nome(programacao.getCdProgramacao())
                 .descricao(programacao.getTxDescricao())
                 .identificador(programacao.getTxIdentificador())
-                .empresa(EmpresaDto.from(programacao.getEmpresa()))
-                .ped(PedDto.from(programacao.getPed()))
                 .situacao(programacao.getDmSituacao())
                 .build();
     }
