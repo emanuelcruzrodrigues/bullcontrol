@@ -1,0 +1,36 @@
+server:
+  port: 8678
+  servlet:
+    contextPath: /bullcontrol/api
+springdoc:
+  default-produces-media-type: application/json
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+spring:
+  jackson:
+    parser:
+      ALLOW_COMMENTS: true
+bullcontrol-api:
+  username: bullcontrol-api
+  bullcontrol:
+    url: url
+  locale:
+    country: BR
+    language: pt
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: health
+    web:
+      exposure:
+        include: health
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
