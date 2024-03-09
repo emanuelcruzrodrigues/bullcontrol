@@ -8,11 +8,13 @@ import br.com.bullcontrol.api.invoker.BullcontrolService;
 import br.com.bullcontrol.api.invoker.BullcontrolServicesInitializer;
 import com.bullcontrol.estoque.domain.TransformacaoMaterial;
 import com.bullcontrol.estoque.service.TransformacaoMaterialService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class TransformacaoMateriaisApiService {
     @BullcontrolService
     private TransformacaoMaterialService transformacaoMaterialService;
@@ -31,7 +33,14 @@ public class TransformacaoMateriaisApiService {
     }
 
     public TransformacaoMateriaisResponseDto delete(Integer id) {
-        TransformacaoMaterial transformacaoMaterial = transformacaoMaterialService.get(id);
+        TransformacaoMaterial transformacaoMaterial = null;
+
+        try {
+            transformacaoMaterial = transformacaoMaterialService.get(id);
+        } catch (Exception e) {
+            log.error("Ocorreu um erro no servidor ao tentar buscar pela transformacao de materiais {}", id);
+        }
+
         if (transformacaoMaterial == null) {
             throw BullcontrolApiException.builder()
                     .httpStatusCode(HttpStatus.BAD_REQUEST)

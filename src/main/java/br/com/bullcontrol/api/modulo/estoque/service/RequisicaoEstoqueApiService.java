@@ -7,11 +7,13 @@ import br.com.bullcontrol.api.exception.BullcontrolApiException;
 import br.com.bullcontrol.api.invoker.BullcontrolService;
 import br.com.bullcontrol.api.invoker.BullcontrolServicesInitializer;
 import com.bullcontrol.estoque.domain.RequisicaoEstoque;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class RequisicaoEstoqueApiService {
 
     @BullcontrolService
@@ -31,7 +33,13 @@ public class RequisicaoEstoqueApiService {
     }
 
     public RequisicaoEstoqueResponseDto delete(Integer id) {
-        RequisicaoEstoque requisicaoEstoque = requisicaoEstoqueService.get(id);
+        RequisicaoEstoque requisicaoEstoque = null;
+
+        try {
+            requisicaoEstoque = requisicaoEstoqueService.get(id);
+        } catch (Exception e) {
+            log.error("Ocorreu um erro no servidor ao tentar buscar pela requisicao {}", id);
+        }
         if (requisicaoEstoque == null) {
             throw BullcontrolApiException.builder()
                     .httpStatusCode(HttpStatus.BAD_REQUEST)
