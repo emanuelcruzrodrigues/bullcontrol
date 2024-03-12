@@ -1,4 +1,4 @@
-package br.com.bullcontrol.api.modulo.estoque.domain;
+package br.com.bullcontrol.api.modulo.estoque.domain.response;
 
 import br.com.bullcontrol.api.modulo.cadastro.domain.EmpresaDto;
 import br.com.bullcontrol.api.modulo.cadastro.domain.PedDto;

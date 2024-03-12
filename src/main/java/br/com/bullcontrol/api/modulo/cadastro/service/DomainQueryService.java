@@ -123,6 +123,11 @@ public class DomainQueryService {
         return localizacaoEstoqueService.get(id, true);
     }
 
+    public Lote getLote(Long id) {
+        if (id == null) return null;
+        return loteService.get(id);
+    }
+
     public Lote getLote(LoteDto loteDto) {
         if (loteDto == null || loteDto.getNumero() == null) return null;
 

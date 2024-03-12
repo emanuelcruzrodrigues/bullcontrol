@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Locale;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({BullcontrolApiException.class})
-    public ResponseEntity<Object> handleStudentNotFoundException(BullcontrolApiException exception) {
+    public ResponseEntity<Object> handle(BullcontrolApiException exception) {
         exception.printStackTrace();
 
         return ResponseEntity
@@ -23,7 +21,7 @@ public class GlobalExceptionHandler {
                 );
     }
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
+    public ResponseEntity<Object> handle(RuntimeException exception) {
         exception.printStackTrace();
 
         if (exception instanceof BullcontrolException) {

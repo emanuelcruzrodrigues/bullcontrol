@@ -1,7 +1,7 @@
 package br.com.bullcontrol.api.modulo.estoque.service;
 
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisRequestDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisResponseDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.request.TransformacaoMateriaisRequestDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.response.TransformacaoMateriaisResponseDto;
 import br.com.bullcontrol.api.modulo.estoque.transformer.TransformacaoMateriaisTransformer;
 import br.com.bullcontrol.api.exception.BullcontrolApiException;
 import br.com.bullcontrol.api.invoker.BullcontrolService;

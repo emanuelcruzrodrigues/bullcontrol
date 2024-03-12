@@ -1,9 +1,9 @@
 package br.com.bullcontrol.api.modulo.estoque.controller;
 
-import br.com.bullcontrol.api.modulo.estoque.domain.RequisicaoEstoqueRequestDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.RequisicaoEstoqueResponseDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisRequestDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisResponseDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.request.RequisicaoEstoqueRequestDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.response.RequisicaoEstoqueResponseDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.request.TransformacaoMateriaisRequestDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.response.TransformacaoMateriaisResponseDto;
 import br.com.bullcontrol.api.modulo.estoque.service.RequisicaoEstoqueApiService;
 import br.com.bullcontrol.api.modulo.estoque.service.TransformacaoMateriaisApiService;
 import io.swagger.v3.oas.annotations.Parameter;
