@@ -33,7 +33,7 @@ public class HessianInvoker implements Invoker {
             InvokerResponse response = ZipHandler.inflate(objBytes);
             if (response.isException()) throw response.getThrowable();
             return response.getResult();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             if (e instanceof HessianRuntimeException){
                 if (((HessianRuntimeException)e).getRootCause() instanceof ConnectException){
                     throw new RuntimeException("Error conecting server");
@@ -42,9 +42,12 @@ public class HessianInvoker implements Invoker {
             Throwable cause = e.getCause() == null ? e : e.getCause();
             if (cause instanceof InvalidClassException){
                 throw new RuntimeException("Bullcontrol server lib is outdated");
-            }else if (cause instanceof IOException){
+            } else if (cause instanceof IOException){
                 throw new RuntimeException("Error connecting server");
+            } else if (cause instanceof ClassNotFoundException) {
+                throw new RuntimeException(String.format("Incomplete classpath detected. Class not found: %s", cause.getMessage()));
             }
+
             throw cause;
         }
     }

@@ -1,4 +1,4 @@
-package br.com.bullcontrol.api.modulo.estoque.domain;
+package br.com.bullcontrol.api.modulo.estoque.domain.request;
 
 import br.com.bullcontrol.api.modulo.cadastro.domain.LoteDto;
 import lombok.Data;

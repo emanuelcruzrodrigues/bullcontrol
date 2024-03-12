@@ -4,10 +4,12 @@ import br.com.bullcontrol.api.modulo.cadastro.domain.EmpresaDto;
 import br.com.bullcontrol.api.modulo.cadastro.domain.PedDto;
 import br.com.bullcontrol.api.modulo.cadastro.domain.ProgramacaoDto;
 import br.com.bullcontrol.api.modulo.cadastro.service.DomainQueryService;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisDestinoDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisOrigemDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisRequestDto;
-import br.com.bullcontrol.api.modulo.estoque.domain.TransformacaoMateriaisResponseDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.request.TransformacaoMateriaisDestinoRequestDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.request.TransformacaoMateriaisOrigemRequestDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.response.TransformacaoMateriaisDestinoResponseDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.response.TransformacaoMateriaisOrigemResponseDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.request.TransformacaoMateriaisRequestDto;
+import br.com.bullcontrol.api.modulo.estoque.domain.response.TransformacaoMateriaisResponseDto;
 import com.bullcontrol.enums.NormalCancelado;
 import com.bullcontrol.estoque.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.joda.time.LocalTime;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -34,38 +37,38 @@ public class TransformacaoMateriaisTransformer {
         transformacaoMaterial.setProgramacao(domainQueryService.getProgramacao(transformacaoMateriaisRequestDto.getIdProgramacao()));
 
         Optional.ofNullable(transformacaoMateriaisRequestDto.getOrigens()).ifPresent(origens ->
-                origens.stream().forEach(transformacaoMateriaisOrigemDto -> transformacaoMaterial.add(toTransformacaoMaterialOrigem(transformacaoMateriaisOrigemDto)))
+                origens.stream().forEach(transformacaoMateriaisOrigemResponseDto -> transformacaoMaterial.add(toTransformacaoMaterialOrigem(transformacaoMateriaisOrigemResponseDto)))
         );
 
         Optional.ofNullable(transformacaoMateriaisRequestDto.getDestinos()).ifPresent(destinos ->
-                destinos.stream().forEach(transformacaoMateriaisDestinoDto -> transformacaoMaterial.add(toTransformacaoMaterialDestino(transformacaoMateriaisDestinoDto)))
+                destinos.stream().forEach(transformacaoMateriaisDestinoResponseDto -> transformacaoMaterial.add(toTransformacaoMaterialDestino(transformacaoMateriaisDestinoResponseDto)))
         );
 
         return transformacaoMaterial;
     }
 
-    private TransformacaoMaterialOrigem toTransformacaoMaterialOrigem(TransformacaoMateriaisOrigemDto transformacaoMateriaisOrigemDto) {
+    private TransformacaoMaterialOrigem toTransformacaoMaterialOrigem(TransformacaoMateriaisOrigemRequestDto origemDto) {
         TransformacaoMaterialOrigem transformacaoMaterialOrigem = new TransformacaoMaterialOrigem();
         transformacaoMaterialOrigem.setQuantidadeSaldoA(0D);
         transformacaoMaterialOrigem.setQuantidadeSaldoB(0D);
 
-        Optional.ofNullable(transformacaoMateriaisOrigemDto.getLote()).ifPresent(lote -> {
-            transformacaoMaterialOrigem.setLote(domainQueryService.getLote(transformacaoMateriaisOrigemDto.getLote()));
-            transformacaoMaterialOrigem.setLoteFilter(transformacaoMateriaisOrigemDto.getLote().toLoteFilter());
+        Optional.ofNullable(origemDto.getLote()).ifPresent(lote -> {
+            transformacaoMaterialOrigem.setLote(domainQueryService.getLote(origemDto.getLote()));
+            transformacaoMaterialOrigem.setLoteFilter(origemDto.getLote().toLoteFilter());
         });
 
-        transformacaoMaterialOrigem.setProduto(domainQueryService.getProduto(transformacaoMateriaisOrigemDto.getCdProduto()));
+        transformacaoMaterialOrigem.setProduto(domainQueryService.getProduto(origemDto.getCdProduto()));
 
-        transformacaoMaterialOrigem.setOperacaoEstoqueSaida(domainQueryService.getOperacaoEstoque(transformacaoMateriaisOrigemDto.getCdOperacaoEstoqueSaida()));
-        transformacaoMaterialOrigem.setLocalizacaoEstoqueSaida(domainQueryService.getLocalizacaoEstoque(transformacaoMateriaisOrigemDto.getCdLocalizacaoEstoqueSaida()));
+        transformacaoMaterialOrigem.setOperacaoEstoqueSaida(domainQueryService.getOperacaoEstoque(origemDto.getCdOperacaoEstoqueSaida()));
+        transformacaoMaterialOrigem.setLocalizacaoEstoqueSaida(domainQueryService.getLocalizacaoEstoque(origemDto.getCdLocalizacaoEstoqueSaida()));
 
-        transformacaoMaterialOrigem.setQuantidadeA(transformacaoMateriaisOrigemDto.getQuantidadeA());
-        transformacaoMaterialOrigem.setQuantidadeB(transformacaoMateriaisOrigemDto.getQuantidadeB());
+        transformacaoMaterialOrigem.setQuantidadeA(origemDto.getQuantidadeA());
+        transformacaoMaterialOrigem.setQuantidadeB(origemDto.getQuantidadeB());
 
         return transformacaoMaterialOrigem;
     }
 
-    private TransformacaoMaterialDestino toTransformacaoMaterialDestino(TransformacaoMateriaisDestinoDto destinoDto) {
+    private TransformacaoMaterialDestino toTransformacaoMaterialDestino(TransformacaoMateriaisDestinoRequestDto destinoDto) {
         TransformacaoMaterialDestino transformacaoMaterialDestino = new TransformacaoMaterialDestino();
 
         Optional.ofNullable(destinoDto.getLote()).ifPresent(lote -> {
@@ -83,8 +86,6 @@ public class TransformacaoMateriaisTransformer {
         return transformacaoMaterialDestino;
     }
 
-
-
     public TransformacaoMateriaisResponseDto toTransformacaoMateriaisResponseDto(TransformacaoMaterial transformacaoMaterial) {
         return TransformacaoMateriaisResponseDto.builder()
                 .id(transformacaoMaterial.getIdTransformacaoMaterial())
@@ -92,6 +93,8 @@ public class TransformacaoMateriaisTransformer {
                 .empresa(EmpresaDto.from(transformacaoMaterial.getEmpresa()))
                 .ped(PedDto.from(transformacaoMaterial.getPed()))
                 .programacao(ProgramacaoDto.from(transformacaoMaterial.getProgramacao()))
+                .origens(transformacaoMaterial.getOrigens().stream().map(TransformacaoMateriaisOrigemResponseDto::from).collect(Collectors.toList()))
+                .destinos(transformacaoMaterial.getDestinos().stream().map(TransformacaoMateriaisDestinoResponseDto::from).collect(Collectors.toList()))
                 .build();
     }
 

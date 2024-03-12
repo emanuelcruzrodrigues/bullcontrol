@@ -1,5 +1,5 @@
 server:
-  port: 8678
+  port: 18081
   servlet:
     contextPath: /bullcontrol/api
 springdoc:

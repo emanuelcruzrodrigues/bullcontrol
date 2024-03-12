@@ -11,8 +11,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoteDto {
     private String numero;
-    private ProdutoDto produto;
-    private ProgramacaoDto programacao;
     private Double comprimento;
     private Double largura;
     private String observacoes;
@@ -21,8 +19,6 @@ public class LoteDto {
         if (lote == null) return null;
         return builder()
                 .numero(lote.toString())
-                .produto(ProdutoDto.from(lote.getProduto()))
-                .programacao(ProgramacaoDto.from(lote.getProgramacao()))
                 .comprimento(lote.getComprimento())
                 .largura(lote.getLargura())
                 .observacoes(lote.getObservacoes())
