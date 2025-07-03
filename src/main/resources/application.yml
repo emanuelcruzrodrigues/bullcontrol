@@ -15,7 +15,7 @@ spring:
 bullcontrol-api:
   username: bullcontrol-api
   bullcontrol:
-    url: url
+    url: http://localhost:8080/bullcontrol
   locale:
     country: BR
     language: pt

@@ -53,8 +53,11 @@ public class TransformacaoMateriaisTransformer {
         transformacaoMaterialOrigem.setQuantidadeSaldoB(0D);
 
         Optional.ofNullable(origemDto.getLote()).ifPresent(lote -> {
-            transformacaoMaterialOrigem.setLote(domainQueryService.getLote(origemDto.getLote()));
-            transformacaoMaterialOrigem.setLoteFilter(origemDto.getLote().toLoteFilter());
+            Lote loadedLote = domainQueryService.getLoteByNumero(origemDto.getLote().getNumero());
+            transformacaoMaterialOrigem.setLote(loadedLote);
+
+            LoteFilter loteFilter = origemDto.getLote().toLoteFilter(loadedLote);
+            transformacaoMaterialOrigem.setLoteFilter(loteFilter);
         });
 
         transformacaoMaterialOrigem.setProduto(domainQueryService.getProduto(origemDto.getCdProduto()));
@@ -72,8 +75,16 @@ public class TransformacaoMateriaisTransformer {
         TransformacaoMaterialDestino transformacaoMaterialDestino = new TransformacaoMaterialDestino();
 
         Optional.ofNullable(destinoDto.getLote()).ifPresent(lote -> {
-            transformacaoMaterialDestino.setLote(domainQueryService.getLote(destinoDto.getLote()));
-            transformacaoMaterialDestino.setLoteFilter(destinoDto.getLote().toLoteFilter());
+            if (lote.getNumero() != null) {
+                Lote loadedLote = domainQueryService.getLoteByNumero(lote.getNumero());
+                transformacaoMaterialDestino.setLote(loadedLote);
+
+                LoteFilter loteFilter = lote.toLoteFilter(loadedLote);
+                transformacaoMaterialDestino.setLoteFilter(loteFilter);
+            } else {
+                LoteFilter loteFilter = lote.toLoteFilter();
+                transformacaoMaterialDestino.setLoteFilter(loteFilter);
+            }
         });
 
         transformacaoMaterialDestino.setProduto(domainQueryService.getProduto(destinoDto.getCdProduto()));

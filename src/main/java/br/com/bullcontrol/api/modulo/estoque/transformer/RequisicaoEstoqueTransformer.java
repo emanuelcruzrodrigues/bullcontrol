@@ -8,6 +8,8 @@ import br.com.bullcontrol.api.modulo.estoque.domain.request.RequisicaoEstoqueReq
 import br.com.bullcontrol.api.modulo.estoque.domain.response.RequisicaoEstoqueResponseDto;
 import com.bullcontrol.enums.NormalCancelado;
 import com.bullcontrol.enums.TipoOperacaoEstoque;
+import com.bullcontrol.estoque.domain.Lote;
+import com.bullcontrol.estoque.domain.LoteFilter;
 import com.bullcontrol.estoque.domain.RequisicaoEstoque;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDate;
@@ -40,8 +42,10 @@ public class RequisicaoEstoqueTransformer {
         requisicaoEstoque.setProgramacao(domainQueryService.getProgramacao(requestDto.getIdProgramacao()));
 
         Optional.ofNullable(requestDto.getLote()).ifPresent(lote -> {
-            requisicaoEstoque.setLote(domainQueryService.getLote(requestDto.getLote()));
-            requisicaoEstoque.setLoteFilter(requestDto.getLote().toLoteFilter());
+            Lote loadedLote = domainQueryService.getLoteByNumero(requestDto.getLote().getNumero());
+            requisicaoEstoque.setLote(loadedLote);
+            LoteFilter loteFilter = requestDto.getLote().toLoteFilter(loadedLote);
+            requisicaoEstoque.setLoteFilter(loteFilter);
         });
 
         requisicaoEstoque.setOperacaoEstoqueEntrada(domainQueryService.getOperacaoEstoque(requestDto.getCdOperacaoEstoqueEntrada()));

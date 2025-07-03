@@ -56,7 +56,7 @@ public class CadastroController {
 
     @RequestMapping(value = "lote/{nr}", method = RequestMethod.GET)
     public LoteDto getLote(@PathVariable @Parameter(name = "nr", description = "Numero do lote", example = "100 A") String nr) {
-        Lote lote = domainQueryService.getLote(LoteDto.builder().numero(nr).build());
+        Lote lote = domainQueryService.getLoteByNumero(LoteDto.builder().numero(nr).build().getNumero());
         return LoteDto.from(lote);
     }
 

@@ -18,6 +18,7 @@ import com.bullcontrol.pcp.domain.Programacao;
 import com.bullcontrol.pcp.service.ProgramacaoService;
 import com.bullcontrol.ped.domain.PED;
 import com.bullcontrol.ped.service.PEDService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -123,20 +124,15 @@ public class DomainQueryService {
         return localizacaoEstoqueService.get(id, true);
     }
 
-    public Lote getLote(Long id) {
-        if (id == null) return null;
-        return loteService.get(id);
-    }
+    public Lote getLoteByNumero(String numeroLote) {
+        if (StringUtils.isBlank(numeroLote)) return null;
 
-    public Lote getLote(LoteDto loteDto) {
-        if (loteDto == null || loteDto.getNumero() == null) return null;
-
-        List<LoteView> loteViews = loteService.get(loteDto.getNumero());
+        List<LoteView> loteViews = loteService.get(numeroLote);
 
         if (loteViews.size() != 1) {
             throw BullcontrolApiException.builder()
                     .httpStatusCode(HttpStatus.BAD_REQUEST)
-                    .message(String.format("Lote nao localizado com o numero: %s", loteDto.getNumero()))
+                    .message(String.format("Lote nao localizado com o numero: %s", numeroLote))
                     .build();
         }
 
