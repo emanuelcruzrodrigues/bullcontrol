@@ -27,7 +27,7 @@ public class RequisicaoEstoqueApiService {
     }
 
     public RequisicaoEstoqueResponseDto save(RequisicaoEstoqueRequestDto requisicaoEstoqueRequestDto) {
-        RequisicaoEstoque requisicaoEstoque = requisicaoEstoqueTransformer.toTransformacaoMaterial(requisicaoEstoqueRequestDto);
+        RequisicaoEstoque requisicaoEstoque = requisicaoEstoqueTransformer.toRequisicaoEstoque(requisicaoEstoqueRequestDto);
         RequisicaoEstoque saved = requisicaoEstoqueService.save(requisicaoEstoque);
         return requisicaoEstoqueTransformer.toRequisicaoEstoqueResponseDto(saved);
     }

@@ -24,7 +24,7 @@ import java.util.Optional;
 public class RequisicaoEstoqueTransformer {
 
     private final DomainQueryService domainQueryService;
-    public RequisicaoEstoque toTransformacaoMaterial(RequisicaoEstoqueRequestDto requestDto) {
+    public RequisicaoEstoque toRequisicaoEstoque(RequisicaoEstoqueRequestDto requestDto) {
         RequisicaoEstoque requisicaoEstoque = new RequisicaoEstoque();
         requisicaoEstoque.setDtRequisicaoEstoque(new LocalDate());
         requisicaoEstoque.setHrRequisicaoEstoque(new LocalTime());
@@ -32,6 +32,8 @@ public class RequisicaoEstoqueTransformer {
 
         requisicaoEstoque.setQuantidadeA(requestDto.getQuantidadeA());
         requisicaoEstoque.setQuantidadeB(requestDto.getQuantidadeB());
+
+        requisicaoEstoque.setObservacoes(requestDto.getObservacoes());
 
         requisicaoEstoque.setQuantidadeRegularizacaoA(Optional.ofNullable(requestDto.getQuantidadeRegularizacaoA()).orElse(0D));
         requisicaoEstoque.setQuantidadeRegularizacaoB(Optional.ofNullable(requestDto.getQuantidadeRegularizacaoB()).orElse(0D));

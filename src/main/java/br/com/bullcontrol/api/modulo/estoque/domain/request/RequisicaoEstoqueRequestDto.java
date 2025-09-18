@@ -23,5 +23,6 @@ public class RequisicaoEstoqueRequestDto {
     private String cdLocalizacaoEstoqueRegularizacaoEntrada;
     private Double quantidadeRegularizacaoA;
     private Double quantidadeRegularizacaoB;
+    private String observacoes;
 
 }
